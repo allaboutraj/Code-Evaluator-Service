@@ -1,7 +1,8 @@
-import { Job } from '../types/bullMqJobDefinition';
+import { Job } from "bullmq";
 
+import { IJob } from '../types/bullMqJobDefinition';
 
-class SampleJob implements IJob {
+export default class SampleJob implements IJob {
     name: string;
     payload: Record<string, unknown>;
     constructor( payload: Record<string, unknown>){
@@ -9,8 +10,12 @@ class SampleJob implements IJob {
         this.name = this.constructor.name;
     }
 
-    handle = () => {
-        console.log("Handler of the job called")
+    handle = (job?:Job) => {
+        console.log("Handler of the job called");
+        console.log(this.payload);
+        if(job){
+            console.log(job.name, job.id, job.data);
+        }
     };
 
     failed = (job?: Job) : void => {
